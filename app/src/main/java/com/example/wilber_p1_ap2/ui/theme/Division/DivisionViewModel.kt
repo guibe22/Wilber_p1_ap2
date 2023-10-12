@@ -31,10 +31,10 @@ class DivisionViewModel @Inject constructor(
     var cocienteError by mutableStateOf(false)
     var residuoError by mutableStateOf(false)
 
-    var dividendoLabel by mutableStateOf("")
-    var divisorLabel by mutableStateOf("")
-    var cocienteLabel  by mutableStateOf("")
-    var residuoLabel by mutableStateOf("")
+    var dividendoLabel by mutableStateOf("probando")
+    var divisorLabel by mutableStateOf("probando")
+    var cocienteLabel  by mutableStateOf("probando")
+    var residuoLabel by mutableStateOf("probando")
 
     fun nombreOnchange(Valor:String){
         nombreError= Valor.isBlank()
@@ -45,12 +45,14 @@ class DivisionViewModel @Inject constructor(
             dividendoLabel="Cociente  Requerido"
             return
         }
-        if(valor.toInt()<=0) {
-            dividendoError =true
-            divisorLabel="Diviendo es Requerido"
-        }else{
-            dividendoError =false
-            divisorLabel=""
+        else {
+            if (valor.toInt() <= 0) {
+                dividendoError = true
+                divisorLabel = "Diviendo es Requerido"
+            } else {
+                dividendoError = false
+                divisorLabel = ""
+            }
         }
     }
 
@@ -60,19 +62,17 @@ class DivisionViewModel @Inject constructor(
             divisorLabel="Cociente  Requerido"
             return
         }
-
-
-        if(valor.toInt()<=0) {
-            divisorError =true
-            divisorLabel="Divisor Requerido"
-        }
-        else if((cociente.toInt()+residuo.toInt())!=(dividendo.toInt()/divisor.toInt())){
-            divisorError =true
-            divisorLabel="Divisor Incorrecto"
-        }
         else {
-            divisorError =false
-            divisorLabel=""
+            if (valor.toInt() <= 0) {
+                divisorError = true
+                divisorLabel = "Divisor Requerido"
+            } else if ((cociente.toInt() + residuo.toInt()) != (dividendo.toInt() / divisor.toInt())) {
+                divisorError = true
+                divisorLabel = "Divisor Incorrecto"
+            } else {
+                divisorError = false
+                divisorLabel = ""
+            }
         }
     }
 
@@ -82,18 +82,17 @@ class DivisionViewModel @Inject constructor(
             cocienteLabel="Cociente  Requerido"
             return
         }
-
-        if(valor.toInt()<=0) {
-            cocienteError =true
-            cocienteLabel="Cociente Requerido"
-        }
-        else if((cociente.toInt()+residuo.toInt())!=(dividendo.toInt()/divisor.toInt())){
-            cocienteError =true
-            cocienteLabel="Divisor Incorrecto"
-        }
         else {
-            cocienteError =false
-            cocienteLabel=""
+            if (valor.toInt() <= 0) {
+                cocienteError = true
+                cocienteLabel = "Cociente Requerido"
+            } else if ((cociente.toInt() + residuo.toInt()) != (dividendo.toInt() / divisor.toInt())) {
+                cocienteError = true
+                cocienteLabel = "Divisor Incorrecto"
+            } else {
+                cocienteError = false
+                cocienteLabel = ""
+            }
         }
     }
 
@@ -103,6 +102,7 @@ class DivisionViewModel @Inject constructor(
             residuoLabel="Residuo  Requerido"
             return
         }
+        else{
 
         if(valor.toInt()<=0) {
             residuoError =true
@@ -115,6 +115,7 @@ class DivisionViewModel @Inject constructor(
         else {
             residuoError =false
             residuoLabel=""
+        }
         }
     }
     val divisiones: StateFlow<List<Division>> = repository.getAll()
@@ -130,25 +131,23 @@ class DivisionViewModel @Inject constructor(
         }
         viewModelScope.launch {
             val division = Division(
-                Divisor = divisor.toInt(),
-                Dividiendo = dividendo.toInt(),
-                Cociente = cociente.toInt(),
-                Residuo = residuo.toInt(),
+                Divisor = divisor,
+                Dividiendo = dividendo,
+                Cociente = cociente,
+                Residuo = residuo,
                 nombre = nombre
             )
             repository.save(division)
             limpiar()
         }
     }
-    fun validar():Boolean{
-        var validacion= true
-        validacion= dividendoError
-        validacion=divisorError
-        validacion=nombreError
-        validacion=cocienteError
-        validacion =residuoError
-
-        return validacion
+    fun validar(): Boolean {
+        nombreOnchange(nombre)
+        dividiendoOnChange(dividendo)
+        divisorOnChage(divisor)
+        residuoOnChage(residuo)
+        cocienteOnChage(cociente)
+        return dividendoError && divisorError && nombreError && cocienteError && residuoError
     }
 
     fun limpiar(){

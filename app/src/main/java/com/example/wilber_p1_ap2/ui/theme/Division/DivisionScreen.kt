@@ -26,12 +26,15 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -54,7 +57,7 @@ fun DivisionScreen(
     viewModel: DivisionViewModel= hiltViewModel()
 ) {
 
-      val divisiones by viewModel.divisiones.collectAsState()
+    val divisiones by viewModel.divisiones.collectAsState()
     val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
@@ -63,7 +66,7 @@ fun DivisionScreen(
             .fillMaxSize(),
         topBar = {
             TopAppBar(
-                title = { Text(text = "Primer Parcial") }
+                title = { Text(text = "Primer Parcial Aplicada 2") }
             )
         }
     ) {
@@ -115,9 +118,9 @@ fun DivisionScreen(
                  Textbox(
                      label = "Nombre",
                      value = viewModel.nombre,
-                     onValueChange = viewModel::nombreOnchange,
-                     isError = viewModel.cocienteError,
-                     FocusDirection =FocusDirection.Next ,
+                     onValueChange ={viewModel.nombreOnchange(viewModel.nombre)} ,
+                     isError = viewModel.nombreError,
+                     focusDirection =FocusDirection.Next ,
                      keyboardType =KeyboardType.Text ,
                      imeAction = ImeAction.Next
                  )
@@ -129,9 +132,9 @@ fun DivisionScreen(
                         Textbox(
                             label = "Divisor",
                             value = viewModel.divisor,
-                            onValueChange = viewModel::divisorOnChage,
+                            onValueChange = {viewModel.divisorOnChage(viewModel.divisor)},
                             isError = viewModel.divisorError,
-                            FocusDirection =FocusDirection.Next ,
+                            focusDirection =FocusDirection.Next ,
                             keyboardType =KeyboardType.Number ,
                             imeAction = ImeAction.Next
                         )
@@ -147,14 +150,14 @@ fun DivisionScreen(
                         Textbox(
                             label = "Dividendo",
                             value = viewModel.dividendo,
-                            onValueChange = viewModel::dividiendoOnChange,
+                            onValueChange = {viewModel.dividiendoOnChange(viewModel.dividendo)},
                             isError = viewModel.dividendoError,
-                            FocusDirection =FocusDirection.Next ,
+                            focusDirection =FocusDirection.Next ,
                             keyboardType =KeyboardType.Number ,
                             imeAction = ImeAction.Next
                         )
                         Text(
-                            text = viewModel.divisorLabel,
+                            text = "viewModel.dividendoLabel",
                             style = MaterialTheme.typography.displaySmall,
                             modifier = Modifier.weight(1f)
                         )
@@ -168,14 +171,14 @@ fun DivisionScreen(
                          Textbox(
                              label = "Cociente",
                              value = viewModel.cociente,
-                             onValueChange = viewModel::cocienteOnChage,
+                             onValueChange = {viewModel.cocienteOnChage(viewModel.cociente)},
                              isError = viewModel.cocienteError,
-                             FocusDirection =FocusDirection.Next ,
+                             focusDirection =FocusDirection.Next ,
                              keyboardType =KeyboardType.Number ,
                              imeAction = ImeAction.Next
                          )
                          Text(
-                             text = viewModel.divisorLabel,
+                             text = viewModel.cocienteLabel,
                              style = MaterialTheme.typography.displaySmall,
                              modifier = Modifier.weight(1f)
                          )
@@ -184,16 +187,16 @@ fun DivisionScreen(
                          modifier = Modifier.weight(1f)
                      ) {
                          Textbox(
-                             label = "Dividendo",
-                             value = viewModel.dividendo,
-                             onValueChange = viewModel::dividiendoOnChange,
+                             label = "Residuo",
+                             value = viewModel.residuo,
+                             onValueChange = {viewModel.residuoOnChage(viewModel.residuo)},
                              isError = viewModel.dividendoError,
-                             FocusDirection =FocusDirection.Next ,
+                             focusDirection =FocusDirection.Next ,
                              keyboardType =KeyboardType.Number ,
                              imeAction = ImeAction.Done
                          )
                          Text(
-                             text = viewModel.divisorLabel,
+                             text = viewModel.residuoLabel,
                              style = MaterialTheme.typography.displaySmall,
                              modifier = Modifier.weight(1f)
                          )
@@ -277,7 +280,6 @@ fun card(
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun Textbox(
@@ -285,37 +287,40 @@ fun Textbox(
     value: String,
     onValueChange: (String) -> Unit,
     isError: Boolean,
-    FocusDirection: FocusDirection,
-    keyboardType:  KeyboardType,
+    focusDirection: FocusDirection,
+    keyboardType: KeyboardType,
     imeAction: ImeAction
 
 ){
     val keyboardController = LocalSoftwareKeyboardController.current
     val focusManager = LocalFocusManager.current
-    OutlinedTextField(
-        value =value,
-        onValueChange = onValueChange ,
-        label = {Text(text = label)},
+    var textValue by remember { mutableStateOf(value) }
+
+    TextField(
+        modifier = Modifier.fillMaxWidth(),
+        label = { Text(text = label) },
         singleLine = true,
+        maxLines=1,
+        value = textValue,
+        onValueChange = {
+                        it
+            textValue=it
+        },
         isError = isError,
-        keyboardOptions =KeyboardOptions(
+        keyboardOptions = KeyboardOptions(
             keyboardType =  keyboardType,
             imeAction = imeAction,
             capitalization = KeyboardCapitalization.Words
         ),
         keyboardActions = KeyboardActions{
-            focusManager.moveFocus( FocusDirection)
+            focusManager.moveFocus(focusDirection)
             if (imeAction == ImeAction.Done) {
                 keyboardController?.hide()
             }
         }
-
-
     )
 
-
 }
-
 
 
 @Composable

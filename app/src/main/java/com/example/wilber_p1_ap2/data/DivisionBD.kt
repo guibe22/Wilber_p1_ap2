@@ -7,7 +7,7 @@ import com.example.wilber_p1_ap2.data.local.entities.Division
 
 @Database(
     entities = [Division::class ],
-    version = 1,
+    version = 2,
     exportSchema = false
 )
 abstract class DivisionBD: RoomDatabase() {

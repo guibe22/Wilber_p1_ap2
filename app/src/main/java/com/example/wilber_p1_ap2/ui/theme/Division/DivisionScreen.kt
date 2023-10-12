@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -28,6 +29,8 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -42,8 +45,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wilber_p1_ap2.data.local.Dao.DivisionDao
 import com.example.wilber_p1_ap2.data.local.entities.Division
-import kotlinx.coroutines.flow.collect
-import javax.inject.Inject
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -51,12 +54,13 @@ fun DivisionScreen(
     viewModel: DivisionViewModel= hiltViewModel()
 ) {
 
-    val divisiones = viewModel.divisiones
+      val divisiones by viewModel.divisiones.collectAsState()
+    val snackbarHostState = remember { SnackbarHostState() }
 
     Scaffold(
+        snackbarHost = { SnackbarHost(snackbarHostState) },
         modifier = Modifier
             .fillMaxSize(),
-
         topBar = {
             TopAppBar(
                 title = { Text(text = "Primer Parcial") }
@@ -74,11 +78,18 @@ fun DivisionScreen(
                     .fillMaxWidth()
             ) {
 
+
                 item {
                     Registro(viewModel = viewModel)
                 }
-                items(Divisiones) {
-
+                item {
+                    Text(text = "Lista de Divisiones")
+                }
+                items(divisiones) {
+                        division-> card(
+                    division=division,
+                    delete = { viewModel.delete(division) }
+                )
 
                 }
             }

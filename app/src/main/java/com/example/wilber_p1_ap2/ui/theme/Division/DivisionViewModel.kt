@@ -98,11 +98,11 @@ class DivisionViewModel @Inject constructor(
         }
     }
     val divisiones: StateFlow<List<Division>> = repository.getAll()
-        .stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.WhileSubscribed(5_000),
-            initialValue = emptyList()
-        )
+    .stateIn(
+    scope = viewModelScope,
+    started = SharingStarted.WhileSubscribed(5_000),
+    initialValue = emptyList()
+    )
 
     fun save() {
         if(validar()){

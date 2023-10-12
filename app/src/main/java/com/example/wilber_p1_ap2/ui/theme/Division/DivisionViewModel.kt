@@ -4,42 +4,145 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.wilber_p1_ap2.data.local.entities.Division
 import com.example.wilber_p1_ap2.data.repository.DivisionRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import org.xml.sax.Parser
 import javax.inject.Inject
 
 @HiltViewModel
 class DivisionViewModel @Inject constructor(
     private val repository: DivisionRepository
 ) : ViewModel() {
-    var dividendo by mutableStateOf(0)
-    var divisor by mutableStateOf(0)
-    var cociente by mutableStateOf(0)
-    var Residuo by mutableStateOf(0)
+    var nombre  by mutableStateOf("")
+    var dividendo by mutableStateOf("")
+    var divisor by mutableStateOf("")
+    var cociente by mutableStateOf("")
+    var residuo by mutableStateOf("")
 
+    var nombreError by mutableStateOf(false)
     var dividendoError by mutableStateOf(false)
     var divisorError by mutableStateOf(false)
     var cocienteError by mutableStateOf(false)
-    var ResiduoError by mutableStateOf(false)
+    var residuoError by mutableStateOf(false)
 
-    var dividendoLabel by mutableStateOf("Dividiendo Requerido")
+    var dividendoLabel by mutableStateOf("")
     var divisorLabel by mutableStateOf("")
     var cocienteLabel  by mutableStateOf("")
-    var ResiduoLabel by mutableStateOf("")
+    var residuoLabel by mutableStateOf("")
 
+    fun nombreOnchange(Valor:String){
+        nombreError= Valor.isBlank()
+    }
+    fun dividiendoOnChange(valor:String){
 
-    fun dividiendoOnChange(valor:Int){
-
-        if(valor<=0){
-            dividendoError=true
-        }
-        else{
-            dividendoError=true
+        if(valor.toInt()<=0) {
+            dividendoError =true
+            divisorLabel="Diviendo es Requerido"
+        }else{
+            dividendoError =false
+            divisorLabel=""
         }
     }
 
+    fun divisorOnChage(valor:String){
 
+        if(valor.toInt()<=0) {
+            divisorError =true
+            divisorLabel="Divisor Requerido"
+        }
+        else if((cociente.toInt()+residuo.toInt())!=(dividendo.toInt()/divisor.toInt())){
+            divisorError =true
+            divisorLabel="Divisor Incorrecto"
+        }
+        else {
+            divisorError =false
+            divisorLabel=""
+        }
+    }
 
+    fun cocienteOnChage(valor:String){
 
+        if(valor.toInt()<=0) {
+            cocienteError =true
+            cocienteLabel="Cociente Requerido"
+        }
+        else if((cociente.toInt()+residuo.toInt())!=(dividendo.toInt()/divisor.toInt())){
+            cocienteError =true
+            cocienteLabel="Divisor Incorrecto"
+        }
+        else {
+            cocienteError =false
+            cocienteLabel=""
+        }
+    }
+
+    fun residuoOnChage(valor:String){
+
+        if(valor.toInt()<=0) {
+            residuoError =true
+            residuoLabel="Residuo  Requerido"
+        }
+        else if((cociente.toInt()+residuo.toInt())!=(dividendo.toInt()/divisor.toInt())){
+            residuoError =true
+            residuoLabel="Residuo Incorrecto"
+        }
+        else {
+            residuoError =false
+            residuoLabel=""
+        }
+    }
+    val Divisiones: StateFlow<List<Division>> = repository.getAll()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
+
+    fun save() {
+        if(validar()){
+            return
+        }
+        viewModelScope.launch {
+            val division = Division(
+                Divisor = divisor.toInt(),
+                Dividiendo = dividendo.toInt(),
+                Cociente = cociente.toInt(),
+                Residuo = residuo.toInt(),
+                nombre = nombre
+            )
+            repository.save(division)
+            limpiar()
+        }
+    }
+    fun validar():Boolean{
+        var validacion= true
+        validacion= dividendoError
+        validacion=divisorError
+        validacion=nombreError
+        validacion=cocienteError
+        validacion =residuoError
+
+        return validacion
+    }
+
+    fun limpiar(){
+        dividendo =""
+        divisor =""
+        cociente =""
+        residuo =""
+    }
+
+    fun delete( division: Division){
+        viewModelScope.launch {
+            repository.delete(division)
+
+        }
+    }
 
 }

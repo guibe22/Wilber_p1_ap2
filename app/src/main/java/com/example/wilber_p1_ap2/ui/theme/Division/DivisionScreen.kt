@@ -118,12 +118,14 @@ fun DivisionScreen(
                      onValueChange = viewModel::nombreOnchange,
                      isError = viewModel.cocienteError,
                      FocusDirection =FocusDirection.Next ,
-                     keyboardType =KeyboardType.Number ,
+                     keyboardType =KeyboardType.Text ,
                      imeAction = ImeAction.Next
                  )
 
                 Row{
-                    Column {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Textbox(
                             label = "Divisor",
                             value = viewModel.divisor,
@@ -139,7 +141,9 @@ fun DivisionScreen(
                             modifier = Modifier.weight(1f)
                         )
                     }
-                    Column {
+                    Column(
+                        modifier = Modifier.weight(1f)
+                    ) {
                         Textbox(
                             label = "Dividendo",
                             value = viewModel.dividendo,
@@ -158,7 +162,9 @@ fun DivisionScreen(
                 }
 
                  Row{
-                     Column {
+                     Column(
+                         modifier = Modifier.weight(1f)
+                     ) {
                          Textbox(
                              label = "Cociente",
                              value = viewModel.cociente,
@@ -174,7 +180,9 @@ fun DivisionScreen(
                              modifier = Modifier.weight(1f)
                          )
                      }
-                     Column {
+                     Column(
+                         modifier = Modifier.weight(1f)
+                     ) {
                          Textbox(
                              label = "Dividendo",
                              value = viewModel.dividendo,
@@ -287,7 +295,7 @@ fun Textbox(
     OutlinedTextField(
         value =value,
         onValueChange = onValueChange ,
-        label = {Text(text = "Nombre")},
+        label = {Text(text = label)},
         singleLine = true,
         isError = isError,
         keyboardOptions =KeyboardOptions(

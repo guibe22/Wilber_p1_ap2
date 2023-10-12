@@ -8,8 +8,8 @@ class Division (
     @PrimaryKey
     val nombre:String,
     val dividirId: Int?=null,
-    val Dividiendo:Int,
-    val Divisor:Int,
-    val Cociente:Int,
-    val Residuo: Int
+    val Dividiendo:String,
+    val Divisor:String,
+    val Cociente:String,
+    val Residuo: String
     )

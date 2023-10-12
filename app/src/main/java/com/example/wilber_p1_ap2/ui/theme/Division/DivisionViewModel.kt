@@ -40,7 +40,7 @@ class DivisionViewModel @Inject constructor(
         nombreError= Valor.isBlank()
     }
     fun dividiendoOnChange(valor:String){
-        if (valor.isEmpty()) {
+        if (valor.isNullOrBlank()) {
             dividendoError =true
             dividendoLabel="Cociente  Requerido"
             return
@@ -55,7 +55,7 @@ class DivisionViewModel @Inject constructor(
     }
 
     fun divisorOnChage(valor:String){
-        if (valor.isEmpty()) {
+        if (valor.isNullOrBlank()) {
             divisorError =true
             divisorLabel="Cociente  Requerido"
             return
@@ -77,7 +77,7 @@ class DivisionViewModel @Inject constructor(
     }
 
     fun cocienteOnChage(valor:String){
-        if (valor.isEmpty()) {
+        if (valor.isNullOrBlank()) {
             cocienteError =true
             cocienteLabel="Cociente  Requerido"
             return
@@ -98,7 +98,7 @@ class DivisionViewModel @Inject constructor(
     }
 
     fun residuoOnChage(valor:String){
-        if (valor.isEmpty()) {
+        if (valor.isNullOrBlank()) {
             residuoError =true
             residuoLabel="Residuo  Requerido"
             return

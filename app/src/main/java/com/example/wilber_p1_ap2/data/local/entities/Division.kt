@@ -6,8 +6,8 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "divisiones")
 class Division (
     @PrimaryKey
-    val nombre:String,
-    val dividirId: Int?=null,
+    val DividirId: Int?=null,
+    val Nombre:String,
     val Dividiendo:String,
     val Divisor:String,
     val Cociente:String,

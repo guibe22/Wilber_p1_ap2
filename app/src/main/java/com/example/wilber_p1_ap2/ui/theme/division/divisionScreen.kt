@@ -284,6 +284,7 @@ fun CardDivision(
            }
        }
     }
+    Spacer(modifier = Modifier.height(25.dp))
 }
 
 

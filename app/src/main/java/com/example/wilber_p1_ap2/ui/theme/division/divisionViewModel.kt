@@ -59,30 +59,34 @@ class divisionViewModel @Inject constructor(
 
     fun onDividiendoChanged(valor: String) {
         dividiendo = valor
+        validarEcuacion()
         dividiendoError = valor.isBlank() || valor.toDoubleOrNull() ?: 0.0 <= 0.0
         dividiendoLabel = if (dividiendoError) "Dividiendo requerido" else ""
-        validarEcuacion()
+
     }
 
     fun onDivisorChanged(valor: String) {
         divisor = valor
+        validarEcuacion()
         divisorError = valor.isBlank() || valor.toDoubleOrNull() ?: 0.0 <= 0.0
         divisorLabel = if (divisorError) "Divisor requerido" else ""
-        validarEcuacion()
+
     }
 
     fun onCocienteChanged(valor: String) {
         cociente = valor
+        validarEcuacion()
         cocienteError = valor.isBlank() || valor.toDoubleOrNull() == null
         cocienteLabel = if (cocienteError) "Cociente requerido" else ""
-        validarEcuacion()
+
     }
 
     fun onResiduoChanged(valor: String) {
         residuo = valor
+        validarEcuacion()
         residuoError = valor.isBlank() || valor.toDoubleOrNull() == null
         residuoLabel = if (residuoError) "Residuo requerido" else ""
-        validarEcuacion()
+
     }
 
     fun validarEcuacion() {
@@ -100,11 +104,11 @@ class divisionViewModel @Inject constructor(
 
 
         if (ecuacionError) {
-            divisorLabel = "Divisor incorrecto"
+            divisorLabel = if(divisor.isBlank()) "Divisor Requerido" else "Requerido incorrecto"
             divisorError=true
-            cocienteLabel = "Cociente incorrecto"
+            cocienteLabel = if(cociente.isBlank()) "Cociente Requerido" else "Cociente incorrecto"
             cocienteError=true
-            residuoLabel = "residuo incorrecto"
+            residuoLabel = if(residuo.isBlank()) "Residuo Requerido" else "Residuo  incorrecto"
             residuoError=true
         }else{
             divisorLabel = ""

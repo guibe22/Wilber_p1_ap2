@@ -90,16 +90,14 @@ class divisionViewModel @Inject constructor(
         val divisorValue = divisor.toDoubleOrNull() ?: 1.0
         val cocienteValue = cociente.toDoubleOrNull() ?: 0.0
         val residuoValue = residuo.toDoubleOrNull() ?: 0.0
+        val residuoDivididoPor10 = residuoValue / 10.0
 
         val resultadoEcuacion = dividendoValue / divisorValue
-        val sumaCocienteResiduo = cocienteValue + residuoValue
+        val sumaCocienteResiduo = cocienteValue + residuoDivididoPor10
 
         val ecuacionError = Math.abs(resultadoEcuacion - sumaCocienteResiduo) > 0.0001
 
-        dividiendoLabel = if (dividiendoError) "Dividiendo requerido" else ""
-        divisorLabel = if (divisorError) "Divisor requerido" else ""
-        cocienteLabel = if (cocienteError) "Cociente requerido" else ""
-        residuoLabel = if (residuoError) "Residuo requerido" else ""
+
 
         if (ecuacionError) {
             divisorLabel = "Divisor incorrecto"
@@ -108,6 +106,13 @@ class divisionViewModel @Inject constructor(
             cocienteError=true
             residuoLabel = "residuo incorrecto"
             residuoError=true
+        }else{
+            divisorLabel = ""
+            divisorError=false
+            cocienteLabel = ""
+            cocienteError=false
+            residuoLabel = ""
+            residuoError=false
         }
     }
     fun validar(): Boolean {

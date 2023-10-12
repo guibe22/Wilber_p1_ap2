@@ -85,13 +85,17 @@ fun DivisionScreen(
                 ) {
                     item {
                         Registro(viewModel = viewModel)
-                    }
-                    item {
+
+                        Spacer(modifier = Modifier.height(25.dp))
+
                         Text(
                             text = "Historial de Resultados",
                             fontSize = 25.sp
                         )
+                        
+                        Spacer(modifier = Modifier.height(25.dp))
                     }
+
                     items(divisiones) { division ->
                        CardDivision(division = division, viewModel=viewModel )
 

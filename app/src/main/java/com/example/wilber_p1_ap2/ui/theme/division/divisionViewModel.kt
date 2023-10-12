@@ -1,4 +1,4 @@
-package com.example.wilber_p1_ap2.ui.theme.Division
+package com.example.wilber_p1_ap2.ui.theme.division
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -17,7 +17,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DivisionViewModel @Inject constructor(
+class divisionViewModel @Inject constructor(
     private val repository: DivisionRepository
 ) : ViewModel() {
     var nombre by mutableStateOf("")
@@ -104,14 +104,39 @@ class DivisionViewModel @Inject constructor(
             cocienteLabel = "Cociente incorrecto"
             residuoLabel = "residuo incorrecto"
         }
+    }
+    fun validar():Boolean{
+        onNombreChanged(nombre)
+        onDivisorChanged(divisor)
+        onDividiendoChanged(dividiendo)
+        onCocienteChanged(cociente)
+        onResiduoChanged(residuo)
+
+        return nombreError && divisorError && dividiendoError && cocienteError && residuoError
+    }
+    val divisiones: StateFlow<List<Division>> = repository.getAll()
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = emptyList()
+        )
+        fun save() {
+           if (validar()){ return}
+            viewModelScope.launch {
+                val division = Division(
+                    Nombre=nombre,
+                    Divisor = divisor,
+                    Dividiendo = dividiendo,
+                    Cociente = cociente,
+                    Residuo = residuo
+                )
+                repository.save(division)
+            }
+            limpiar()
+        }
 
 
-        val divisiones: StateFlow<List<Division>> = repository.getAll()
-            .stateIn(
-                scope = viewModelScope,
-                started = SharingStarted.WhileSubscribed(5_000),
-                initialValue = emptyList()
-            )
+
         fun limpiar(){
             nombre=""
             divisor=""
@@ -132,23 +157,11 @@ class DivisionViewModel @Inject constructor(
             cocienteError = false
 
         }
-        fun save() {
-            viewModelScope.launch {
-                val division = Division(
-                    Nombre=nombre,
-                    Divisor = divisor,
-                    Dividiendo = dividiendo,
-                    Cociente = cociente,
-                    Residuo = residuo
-                )
-                repository.save(division)
-            }
-            limpiar()
-        }
+
 
        fun  delete(division:Division){
            viewModelScope.launch {
-               repository.save(division)
+               repository.delete(division)
            }
         }
 
@@ -157,7 +170,8 @@ class DivisionViewModel @Inject constructor(
 
 
 
-    }
+
+
 
 
 

@@ -23,10 +23,12 @@ import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -40,8 +42,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.wilber_p1_ap2.data.local.Dao.DivisionDao
 import com.example.wilber_p1_ap2.data.local.entities.Division
-import com.example.wilber_p1_ap2.data.repository.DivisionRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.collect
 import javax.inject.Inject
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -50,9 +51,12 @@ fun DivisionScreen(
     viewModel: DivisionViewModel= hiltViewModel()
 ) {
 
+    val divisiones = viewModel.divisiones
+
     Scaffold(
         modifier = Modifier
             .fillMaxSize(),
+
         topBar = {
             TopAppBar(
                 title = { Text(text = "Primer Parcial") }
@@ -73,9 +77,9 @@ fun DivisionScreen(
                 item {
                     Registro(viewModel = viewModel)
                 }
-                items(viewModel.Divisiones) {
+                items(Divisiones) {
 
-                        
+
                 }
             }
         }

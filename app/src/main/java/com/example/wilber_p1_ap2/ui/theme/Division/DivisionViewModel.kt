@@ -97,7 +97,7 @@ class DivisionViewModel @Inject constructor(
             residuoLabel=""
         }
     }
-    val Divisiones: StateFlow<List<Division>> = repository.getAll()
+    val divisiones: StateFlow<List<Division>> = repository.getAll()
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.WhileSubscribed(5_000),

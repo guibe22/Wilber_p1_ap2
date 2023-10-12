@@ -57,7 +57,7 @@ fun DivisionScreen(
         viewModel.isMessageShownFlow.collectLatest {
             if (it) {
                 snackbarHostState.showSnackbar(
-                    message = "Division guardada",
+                    message = viewModel.mensaje,
                     duration = SnackbarDuration.Short
                 )
             }

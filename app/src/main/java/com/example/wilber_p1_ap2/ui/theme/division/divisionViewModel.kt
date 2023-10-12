@@ -41,6 +41,8 @@ class divisionViewModel @Inject constructor(
     var residuoLabel by mutableStateOf("")
     var residuoError by mutableStateOf(false)
 
+    var mensaje by mutableStateOf("")
+
     private val _isMessageShown = MutableSharedFlow<Boolean>()
     val isMessageShownFlow = _isMessageShown.asSharedFlow()
 
@@ -101,18 +103,21 @@ class divisionViewModel @Inject constructor(
 
         if (ecuacionError) {
             divisorLabel = "Divisor incorrecto"
+            divisorError=true
             cocienteLabel = "Cociente incorrecto"
+            cocienteError=true
             residuoLabel = "residuo incorrecto"
+            residuoError=true
         }
     }
-    fun validar():Boolean{
+    fun validar(): Boolean {
         onNombreChanged(nombre)
         onDivisorChanged(divisor)
         onDividiendoChanged(dividiendo)
         onCocienteChanged(cociente)
         onResiduoChanged(residuo)
 
-        return nombreError && divisorError && dividiendoError && cocienteError && residuoError
+        return nombreError || divisorError || dividiendoError || cocienteError || residuoError
     }
     val divisiones: StateFlow<List<Division>> = repository.getAll()
         .stateIn(
@@ -121,7 +126,9 @@ class divisionViewModel @Inject constructor(
             initialValue = emptyList()
         )
         fun save() {
-           if (validar()){ return}
+           if (validar()){
+               mensaje="error"
+               return}
             viewModelScope.launch {
                 val division = Division(
                     Nombre=nombre,
@@ -130,6 +137,7 @@ class divisionViewModel @Inject constructor(
                     Cociente = cociente,
                     Residuo = residuo
                 )
+                mensaje="Guardado Correctamente"
                 repository.save(division)
             }
             limpiar()

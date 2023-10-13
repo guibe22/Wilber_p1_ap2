@@ -92,7 +92,7 @@ fun DivisionScreen(
                             text = "Historial de Resultados",
                             fontSize = 25.sp
                         )
-                        
+
                         Spacer(modifier = Modifier.height(25.dp))
                     }
 

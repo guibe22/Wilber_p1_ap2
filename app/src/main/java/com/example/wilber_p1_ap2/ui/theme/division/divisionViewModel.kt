@@ -94,7 +94,7 @@ class divisionViewModel @Inject constructor(
         val divisorValue = divisor.toDoubleOrNull() ?: 1.0
         val cocienteValue = cociente.toDoubleOrNull() ?: 0.0
         val residuoValue = residuo.toDoubleOrNull() ?: 0.0
-        val residuoDivididoPor10 = residuoValue / 10.0
+        val residuoDivididoPor10 = dividirPorDiez(residuoValue)
 
         val resultadoEcuacion = dividendoValue / divisorValue
         val sumaCocienteResiduo = cocienteValue + residuoDivididoPor10
@@ -127,6 +127,13 @@ class divisionViewModel @Inject constructor(
         onResiduoChanged(residuo)
 
         return nombreError || divisorError || dividiendoError || cocienteError || residuoError
+    }
+    fun dividirPorDiez(numero: Double): Double {
+        if (numero < 1.0) {
+            return numero
+        }
+
+        return dividirPorDiez(numero / 10)
     }
     val divisiones: StateFlow<List<Division>> = repository.getAll()
         .stateIn(
@@ -200,3 +207,4 @@ class divisionViewModel @Inject constructor(
 
 
 }
+

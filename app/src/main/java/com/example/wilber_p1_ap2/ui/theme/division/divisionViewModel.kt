@@ -104,7 +104,7 @@ class divisionViewModel @Inject constructor(
 
 
         if (ecuacionError) {
-            divisorLabel = if(divisor.isBlank()) "Divisor Requerido" else "Requerido incorrecto"
+            divisorLabel = if(divisor.isBlank()) "Divisor Requerido" else "Divisor incorrecto"
             divisorError=true
             cocienteLabel = if(cociente.isBlank()) "Cociente Requerido" else "Cociente incorrecto"
             cocienteError=true

@@ -1,12 +1,17 @@
 package com.example.wilber_p1_ap2.ui.theme.division
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -15,9 +20,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
@@ -90,8 +97,9 @@ fun DivisionScreen(
 
                         Text(
                             text = "Historial de Resultados",
-                            fontSize = 25.sp
+                            fontSize = 20.sp
                         )
+                        
 
                         Spacer(modifier = Modifier.height(25.dp))
                     }
@@ -239,7 +247,7 @@ fun CardDivision(
     Card {
         Text(
             text = "Nombre: "+division.Nombre,
-            fontSize = 25.sp
+            fontSize = 20.sp
         )
        Row{
 
@@ -275,16 +283,24 @@ fun CardDivision(
         }
 
            Column(
-               modifier = Modifier.weight(2F)
+               modifier = Modifier
+                   .weight(2F)
+                   .padding(10.dp)
            ) {
-               OutlinedButton(
-                   modifier = Modifier.fillMaxWidth(),
-                   onClick = {
-                       viewModel.delete(division)
-                   })
-               {
-                   Icon(imageVector = Icons.Default.Close, contentDescription = "Eliminar")
-               }
+
+                   IconButton(
+                       onClick = {
+                           viewModel.delete(division)
+                       },
+                       modifier = Modifier
+                           .fillMaxWidth()
+                           .aspectRatio(1f)
+                           .border(1.dp, Color.Red)
+                           .size(10.dp)
+                           .padding(10.dp)
+                   ) {
+                       Icon(imageVector = Icons.Default.Close, contentDescription = "Eliminar", tint = Color.Red)
+                   }
            }
        }
     }

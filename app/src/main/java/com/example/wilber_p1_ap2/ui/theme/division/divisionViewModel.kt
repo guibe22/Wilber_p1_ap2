@@ -94,31 +94,32 @@ class divisionViewModel @Inject constructor(
         val divisorValue = divisor.toDoubleOrNull() ?: 1.0
         val cocienteValue = cociente.toDoubleOrNull() ?: 0.0
         val residuoValue = residuo.toDoubleOrNull() ?: 0.0
-        val residuoDivididoPor10 = dividirPorDiez(residuoValue)
 
         val resultadoEcuacion = dividendoValue / divisorValue
-        val sumaCocienteResiduo = cocienteValue + residuoDivididoPor10
-
-        val ecuacionError = Math.abs(resultadoEcuacion - sumaCocienteResiduo) > 0.0001
-
+        val cocienteNum = resultadoEcuacion.toInt()
+        val residuoNum = dividendoValue % divisorValue
 
 
-        if (ecuacionError) {
-            divisorLabel = if(divisor.isBlank()) "Divisor Requerido" else "Divisor incorrecto"
-            divisorError=true
-            cocienteLabel = if(cociente.isBlank()) "Cociente Requerido" else "Cociente incorrecto"
-            cocienteError=true
-            residuoLabel = if(residuo.isBlank()) "Residuo Requerido" else "Residuo  incorrecto"
-            residuoError=true
-        }else{
+        val cocienteValueValid = cocienteValue == cocienteNum.toDouble()
+        val residuoValueValid = residuoValue == residuoNum
+
+        if (!cocienteValueValid || !residuoValueValid) {
+            divisorLabel = if (divisor.isBlank()) "Divisor Requerido" else "Divisor incorrecto"
+            divisorError = true
+            cocienteLabel = if (cociente.isBlank()) "Cociente Requerido" else "Cociente incorrecto"
+            cocienteError = true
+            residuoLabel = if (residuo.isBlank()) "Residuo Requerido" else "Residuo incorrecto"
+            residuoError = true
+        } else {
             divisorLabel = ""
-            divisorError=false
+            divisorError = false
             cocienteLabel = ""
-            cocienteError=false
+            cocienteError = false
             residuoLabel = ""
-            residuoError=false
+            residuoError = false
         }
     }
+
     fun validar(): Boolean {
         onNombreChanged(nombre)
         onDivisorChanged(divisor)

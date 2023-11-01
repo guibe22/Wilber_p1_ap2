@@ -95,15 +95,11 @@ class divisionViewModel @Inject constructor(
         val cocienteValue = cociente.toDoubleOrNull() ?: 0.0
         val residuoValue = residuo.toDoubleOrNull() ?: 0.0
 
-        val resultadoEcuacion = dividendoValue / divisorValue
-        val cocienteNum = resultadoEcuacion.toInt()
-        val residuoNum = dividendoValue % divisorValue
+       val resultado = (divisorValue*cocienteValue) + residuoValue
 
 
-        val cocienteValueValid = cocienteValue == cocienteNum.toDouble()
-        val residuoValueValid = residuoValue == residuoNum
 
-        if (!cocienteValueValid || !residuoValueValid) {
+        if ( resultado!=dividendoValue) {
             divisorLabel = if (divisor.isBlank()) "Divisor Requerido" else "Divisor incorrecto"
             divisorError = true
             cocienteLabel = if (cociente.isBlank()) "Cociente Requerido" else "Cociente incorrecto"

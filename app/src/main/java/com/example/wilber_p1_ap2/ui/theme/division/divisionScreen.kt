@@ -22,6 +22,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material3.Card
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +39,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
@@ -244,18 +246,22 @@ fun CardDivision(
     viewModel: divisionViewModel
 ){
 
-    Card {
+
         Text(
-            text = "Nombre: "+division.Nombre,
+            text = division.Nombre,
             fontSize = 20.sp
         )
-       Row{
+       Row(
+           verticalAlignment = Alignment.CenterVertically
+       ){
 
 
         Column(
             modifier = Modifier.weight(8F)
         ) {
-        Row {
+        Row(
+
+        ){
             Text(
                 text = "Dividiendo: "+division.Dividiendo,
                 fontSize = 15.sp
@@ -302,8 +308,9 @@ fun CardDivision(
                        Icon(imageVector = Icons.Default.Close, contentDescription = "Eliminar", tint = Color.Red)
                    }
            }
-       }
+
     }
+    Divider()
     Spacer(modifier = Modifier.height(25.dp))
 }
 
